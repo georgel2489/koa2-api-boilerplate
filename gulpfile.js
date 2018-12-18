@@ -1,49 +1,32 @@
-// Dependencies
-var gulp = require('gulp');
-var nodemon = require('gulp-nodemon');
-var livereload = require('gulp-livereload');
-var clear = require('clear');
-var apidoc = require('gulp-apidoc');
+const gulp = require('gulp');
+const nodemon = require('gulp-nodemon');
+const livereload = require('gulp-livereload');
+const clearConsole = require('clear');
+const apidoc = require('gulp-apidoc');
 
-// index
-var script = 'index.js';
+const script = 'index.js';
 
-// server reload on change
-var server = function () {
-    return gulp.src(script).pipe(livereload());
-};
+const restartServer = () => gulp.src(script).pipe(livereload());
 
-// documentation generation
-var apidocjs = function () {
-    return apidoc({
-        src: 'app/',
-        dest: 'public/apidoc/',
-        config: './',
-        debug: false,
-        includeFilters: ['.*\\.js$']
-    }, function () {
+livereload.listen();
 
-    });
-};
+const generateDocumentation = () => apidoc({
+    src: 'app/',
+    dest: 'public/apidoc/',
+    config: './',
+    debug: false,
+    includeFilters: ['.*\\.js$'],
+}, () => {
 
-// actions on server restart
-var nodemonjs = function () {
-    return nodemon({
-        script: script,
-        ignore: ['public/*'],
-    }).on('restart', function () {
-        //clear console
-        clear();
+});
 
-        //generate documentation
-        apidocjs();
+const serverRestart = () => nodemon({
+    script,
+    ignore: ['public/*'],
+}).on('restart', () => {
+    clearConsole();
+    generateDocumentation();
+    restartServer();
+});
 
-        //restart server
-        server();
-    });
-};
-
-// start tasks
-gulp.task('default', ['nodemon', 'apidoc']);
-gulp.task('apidoc', apidocjs);
-gulp.task('nodemon', nodemonjs);
+gulp.task('default', gulp.parallel(generateDocumentation, serverRestart));

@@ -9,6 +9,9 @@
       "ecmaVersion": 8
   },
   "rules": {
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "indent": ["error", 4],
+    "import/no-dynamic-require": "off",
+    "global-require": "off"
   }
 }

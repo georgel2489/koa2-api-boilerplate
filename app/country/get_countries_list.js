@@ -11,7 +11,7 @@ const auth = require('../../middlewares/auth');
  * @apiSampleRequest /countries
  */
 router.get('/countries', auth, async (ctx) => {
-  ctx.body = await Country.getList();
+    ctx.body = await Country.getList();
 });
 
 module.exports = router;

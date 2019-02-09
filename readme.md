@@ -4,8 +4,8 @@
 
 ```
 git clone https://github.com/valera-shulghin/koa2-api-boilerplate
-npm install
-npm start
+yarn
+yarn start
 open http://localhost:3000/apidoc/ - slash at the end is required
 ```
 
